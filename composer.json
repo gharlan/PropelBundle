@@ -20,5 +20,10 @@
   "autoload": {
     "psr-0": { "Propel\\PropelBundle": "" }
   },
-  "target-dir": "Propel/PropelBundle"
+  "target-dir": "Propel/PropelBundle",
+  "extra": {
+    "branch-alias": {
+      "dev-master": "2.x-dev"
+    }
+  }
 }

@@ -36,6 +36,11 @@ class PropelBundle extends Bundle
             if ($this->container->getParameter('propel.logging')) {
                 $this->configureLogging();
             }
+
+            $loadDatabaseFile = $this->container->getParameter('propel.configuration')['paths']['schemaDir'].'/loadDatabase.php';
+            if (is_file($loadDatabaseFile)) {
+                require_once $loadDatabaseFile;
+            }
         } catch( \Exception $e ) {
         }
     }

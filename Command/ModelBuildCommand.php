@@ -54,6 +54,7 @@ class ModelBuildCommand extends WrappedCommand
 
         return array(
             '--output-dir' => $outputDir,
+            '--loader-script-dir' => $this->getApplication()->getKernel()->getContainer()->getParameter('propel.configuration')['paths']['schemaDir'],
         );
     }
 }

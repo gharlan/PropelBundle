@@ -29,9 +29,9 @@ class YamlDataLoader extends AbstractDataLoader
     /**
      * {@inheritdoc}
      */
-    public function __construct($rootDir, array $datasources, Generator $faker = null)
+    public function __construct($projectDir, array $datasources, Generator $faker = null)
     {
-        parent::__construct($rootDir, $datasources);
+        parent::__construct($projectDir, $datasources);
 
         $this->faker = $faker;
     }

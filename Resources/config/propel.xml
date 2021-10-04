@@ -48,18 +48,18 @@
         </service>
 
         <service id="propel.dumper.yaml" class="%propel.dumper.yaml.class%">
-            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.project_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
 
         <service id="propel.loader.yaml" class="%propel.loader.yaml.class%">
-            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.project_dir%</argument>
             <argument>%propel.configuration%</argument>
             <argument type="service" id="faker.generator" on-invalid="null" />
         </service>
 
         <service id="propel.loader.xml" class="%propel.loader.xml.class%">
-            <argument>%kernel.root_dir%</argument>
+            <argument>%kernel.project_dir%</argument>
             <argument>%propel.configuration%</argument>
         </service>
 

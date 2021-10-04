@@ -58,7 +58,7 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fixtureDir = $input->getOption('dir') ?: $this->defaultFixturesDir;
-        $path = realpath($this->getApplication()->getKernel()->getRootDir() . '/../') . '/' . $fixtureDir;
+        $path = realpath($this->getApplication()->getKernel()->getProjectDir()) . '/' . $fixtureDir;
 
         if (!file_exists($path)) {
             $output->writeln("<info>The $path folder does not exists.</info>");

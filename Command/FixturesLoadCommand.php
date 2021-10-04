@@ -119,7 +119,7 @@ EOT
         if (null !== $this->bundle) {
             $this->absoluteFixturesPath = $this->getFixturesPath($this->bundle);
         } else {
-            $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getRootDir() . '/../' . $input->getOption('dir'));
+            $this->absoluteFixturesPath = realpath($this->getApplication()->getKernel()->getProjectDir() . '/' . $input->getOption('dir'));
         }
 
         if (!$this->absoluteFixturesPath && !file_exists($this->absoluteFixturesPath)) {

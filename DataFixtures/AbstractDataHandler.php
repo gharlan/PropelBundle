@@ -22,7 +22,7 @@ abstract class AbstractDataHandler
     /**
      * @var string
      */
-    protected $rootDir;
+    protected $projectDir;
 
     /**
      * @var \PDO
@@ -42,21 +42,21 @@ abstract class AbstractDataHandler
     /**
      * Default constructor
      *
-     * @param string $rootDir     The root directory.
+     * @param string $projectDir
      * @param array  $datasources
      */
-    public function __construct($rootDir, array $datasources)
+    public function __construct($projectDir, array $datasources)
     {
-        $this->rootDir = $rootDir;
+        $this->projectDir = $projectDir;
         $this->datasources = $datasources;
     }
 
     /**
      * @return string
      */
-    protected function getRootDir()
+    protected function getProjectDir()
     {
-        return $this->rootDir;
+        return $this->projectDir;
     }
 
     /**
@@ -149,10 +149,10 @@ abstract class AbstractDataHandler
         if (!empty($this->datasources['database']['connections'][$connectionName]['model_paths'])) {
             $modelPaths = $this->datasources['database']['connections'][$connectionName]['model_paths'];
             foreach ($modelPaths as $modelPath) {
-                $searchPath[] = $this->getRootDir() . '/../' . $modelPath;
+                $searchPath[] = $this->getProjectDir() . '/' . $modelPath;
             }
         } else {
-            $searchPath[] = $this->getRootDir() . '/../';
+            $searchPath[] = $this->getProjectDir() . '/';
         }
 
         return $searchPath;

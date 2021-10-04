@@ -21,10 +21,10 @@ class Configuration extends PropelConfiguration
     private $debug;
     private $defaultDir;
 
-    public function __construct($debug, $kernelDir)
+    public function __construct($debug, $projectDir)
     {
         $this->debug = $debug;
-        $this->defaultDir = $kernelDir.'/propel';
+        $this->defaultDir = $projectDir.'/propel';
     }
 
     protected function addPathsSection(ArrayNodeDefinition $node)

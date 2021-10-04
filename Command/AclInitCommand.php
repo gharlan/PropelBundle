@@ -44,7 +44,7 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $outputDir = realpath($this->getApplication()->getKernel()->getRootDir().'/../');
+        $outputDir = realpath($this->getApplication()->getKernel()->getProjectDir().'/');
 
         // Generate ACL model
         $modelBuildCmd = new \Propel\Generator\Command\ModelBuildCommand();
@@ -82,7 +82,7 @@ EOT
             return 2;
         }
 
-        
+
         if ($input->getOption('force')) {
             // insert sql
             $sqlInsertCmd = new \Propel\Generator\Command\SqlInsertCommand();

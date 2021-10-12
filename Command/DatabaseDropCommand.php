@@ -94,6 +94,8 @@ EOT
         $statement->execute();
 
         $output->writeln(sprintf('<info>Database <comment>%s</comment> has been dropped.</info>', $dbName));
+
+        return 0;
     }
 
     /**

@@ -67,6 +67,8 @@ class DatabaseCreateCommand extends AbstractCommand
         $statement->execute();
 
         $output->writeln(sprintf('<info>Database <comment>%s</comment> has been created.</info>', $dbName));
+
+        return 0;
     }
 
     /**

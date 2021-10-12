@@ -81,6 +81,8 @@ EOT
                 $this->createFormTypeFromDatabase($bundle, $database, $models, $output, $force);
             }
         }
+
+        return 0;
     }
 
     /**

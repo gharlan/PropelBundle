@@ -41,11 +41,11 @@
     {# the panel content #}
     <style type="text/css">
     .SQLKeyword {
-        color: blue;
+        color: var(--highlight-string);
         white-space: nowrap;
     }
     .SQLName {
-        color: #464646;
+        color: var(--color-muted);
         white-space: nowrap;
     }
     .SQLComment {
@@ -122,7 +122,7 @@
 
                         {% if app.request.query.has('query') and app.request.query.get('query') == i %}
                             <div class="SQLExplain">
-                                {{ render(controller('PropelBundle:Panel:explain', {
+                                {{ render(controller('Propel\\Bundle\\PropelBundle\\Controller\\PanelController::explain', {
                                     'token': token,
                                     'panel': 'propel',
                                     'query': app.request.query.get('query'),
@@ -141,5 +141,5 @@
         </table>
     {% endif %}
 
-    {{ render(controller('PropelBundle:Panel:configuration')) }}
+    {{ render(controller('Propel\\Bundle\\PropelBundle\\Controller\\PanelController::configuration')) }}
 {% endblock %}

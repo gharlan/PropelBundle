@@ -11,9 +11,8 @@
 namespace Propel\Bundle\PropelBundle\Controller;
 
 use Propel\Runtime\Propel;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,21 +20,32 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController extends Controller
+class PanelController implements ContainerAwareInterface
 {
+    /** @var ContainerInterface */
+    private $container;
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setContainer(?ContainerInterface $container = null)
+    {
+        $this->container = $container;
+    }
+
     /**
      * This method renders the global Propel configuration.
      */
-    public function configurationAction()
+    public function configuration()
     {
-        return $this->render(
+        return new Response($this->container->get('twig')->render(
             '@Propel/Panel/configuration.html.twig',
             array(
                 'propel_version'     => Propel::VERSION,
-                'configuration'      => $this->getParameter('propel.configuration'),
-                'logging'            => $this->getParameter('propel.logging'),
+                'configuration'      => $this->container->getParameter('propel.configuration'),
+                'logging'            => $this->container->getParameter('propel.logging'),
             )
-        );
+        ));
     }
 
     /**
@@ -47,9 +57,9 @@ class PanelController extends Controller
      *
      * @return Response A Response instance
      */
-    public function explainAction($token, $connection, $query)
+    public function explain($token, $connection, $query)
     {
-        $profiler = $this->get('profiler');
+        $profiler = $this->container->get('profiler');
         $profiler->disable();
 
         $profile = $profiler->loadProfile($token);
@@ -70,12 +80,12 @@ class PanelController extends Controller
             return new Response('<div class="error">This query cannot be explained.</div>');
         }
 
-        return $this->render(
+        return new Response($this->container->get('twig')->render(
             '@Propel/Panel/explain.html.twig',
             array(
                 'data' => $results,
                 'query' => $query,
             )
-        );
+        ));
     }
 }

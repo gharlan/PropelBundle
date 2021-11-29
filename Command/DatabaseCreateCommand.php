@@ -42,14 +42,16 @@ class DatabaseCreateCommand extends AbstractCommand
      *
      * @throws \InvalidArgumentException When the target directory does not exist
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $connectionName = $input->getOption('connection') ?: $this->getDefaultConnection();
         $config = $this->getConnectionData($connectionName);
         $dbName = $this->parseDbName($config['dsn']);
 
         if (null === $dbName) {
-            return $output->writeln('<error>No database name found.</error>');
+            $output->writeln('<error>No database name found.</error>');
+
+            return 1;
         } else {
             $query  = 'CREATE DATABASE '. $dbName .';';
         }

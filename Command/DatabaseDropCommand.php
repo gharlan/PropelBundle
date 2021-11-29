@@ -51,12 +51,12 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$input->getOption('force')) {
             $output->writeln('<error>You have to use the "--force" option to drop the database.</error>');
 
-            return;
+            return 1;
         }
 
         if ('prod' === $this->getApplication()->getKernel()->getEnvironment()) {

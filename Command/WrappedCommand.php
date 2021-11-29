@@ -46,7 +46,7 @@ abstract class WrappedCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $params = $this->getSubCommandArguments($input);
         $command = $this->createSubCommandInstance();

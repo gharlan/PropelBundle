@@ -55,7 +55,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $fixtureDir = $input->getOption('dir') ?: $this->defaultFixturesDir;
         $path = realpath($this->getApplication()->getKernel()->getProjectDir()) . '/' . $fixtureDir;

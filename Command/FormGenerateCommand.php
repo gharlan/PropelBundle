@@ -59,7 +59,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $kernel = $this->getApplication()->getKernel();
         $models = $input->getArgument('models');
@@ -71,7 +71,7 @@ EOT
         $schemas = $this->getFinalSchemas($kernel, $bundle);
         if (!$schemas) {
             $output->writeln(sprintf('No <comment>*schemas.xml</comment> files found in bundle <comment>%s</comment>.', $bundle->getName()));
-            return;
+            return 1;
         }
 
         $manager = $this->getModelManager($input, $schemas);

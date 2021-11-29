@@ -44,7 +44,7 @@ class SqlInsertCommand extends WrappedCommand
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if ($input->getOption('force')) {
             return parent::execute($input, $output);

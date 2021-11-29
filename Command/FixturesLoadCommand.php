@@ -112,7 +112,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->filesystem = new Filesystem();
 
@@ -161,7 +161,7 @@ EOT
     protected function loadFixtures(InputInterface $input, OutputInterface $output, $type = null)
     {
         if (null === $type) {
-            return;
+            return 1;
         }
 
         $datas = $this->getFixtureFiles($type);
@@ -177,7 +177,7 @@ EOT
         } elseif ('xml' === $type) {
             $loader = $this->getContainer()->get('propel.loader.xml');
         } else {
-            return;
+            return 1;
         }
 
         $nb = $loader->load($datas, $connectionName);

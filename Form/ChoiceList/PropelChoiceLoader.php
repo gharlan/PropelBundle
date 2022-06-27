@@ -85,7 +85,7 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadChoiceList($value = null)
+    public function loadChoiceList($value = null): ChoiceListInterface
     {
         if ($this->choiceList) {
             return $this->choiceList;
@@ -101,7 +101,7 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadChoicesForValues(array $values, $value = null)
+    public function loadChoicesForValues(array $values, $value = null): array
     {
         // Performance optimization
         if (empty($values)) {
@@ -115,15 +115,13 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
             $unorderedObjects = $query->filterBy($phpName, $values, Criteria::IN);
             $objectsById = array();
             $objects = array();
-
             // Maintain order and indices from the given $values
             foreach ($unorderedObjects as $object) {
                 $objectsById[(string) current($this->getIdentifierValues($object))] = $object;
             }
 
             foreach ($values as $i => $id) {
-                if (isset($objectsById[$id])) {
-                    $objects[$i] = $objectsById[$id];
+                if (isset($objectsById[$id])) {                    $objects[$i] = $objectsById[$id];
                 }
             }
 
@@ -136,15 +134,14 @@ class PropelChoiceLoader implements ChoiceLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadValuesForChoices(array $choices, $value = null)
+    public function loadValuesForChoices(array $choices, $value = null): array
     {
         // Performance optimization
         if (empty($choices)) {
             return array();
         }
 
-        if (!$this->choiceList && $this->identifierAsIndex) {
-            $values = array();
+        if (!$this->choiceList && $this->identifierAsIndex) {            $values = array();
 
             // Maintain order and indices of the given objects
             foreach ($choices as $i => $object) {

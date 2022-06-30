@@ -67,7 +67,7 @@ class PropelBundle extends Bundle
 
         foreach ($config['database']['connections'] as $name => $config) {
             if (!empty($config['slaves'])) {
-                $manager = new ConnectionManagerMasterSlave();
+                $manager = new ConnectionManagerMasterSlave($name);
 
                 // configure the master (write) connection
                 $manager->setWriteConfiguration($config);
@@ -83,12 +83,12 @@ class PropelBundle extends Bundle
 
                 $manager->setReadConfiguration($slaveConnections);
             } else {
-                $manager = new ConnectionManagerSingle();
+                $manager = new ConnectionManagerSingle($name);
                 $manager->setConfiguration($config);
             }
 
             $serviceContainer->setAdapterClass($name, $config['adapter']);
-            $serviceContainer->setConnectionManager($name, $manager);
+            $serviceContainer->setConnectionManager($manager);
         }
     }
 

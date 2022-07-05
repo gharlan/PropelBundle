@@ -13,24 +13,32 @@ namespace Propel\Bundle\PropelBundle\Controller;
 use Propel\Runtime\Propel;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBag;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
+use Twig\Environment;
 
 /**
  * PanelController is designed to display information in the Propel Panel.
  *
  * @author William DURAND <william.durand1@gmail.com>
  */
-class PanelController implements ContainerAwareInterface
+class PanelController
 {
-    /** @var ContainerInterface */
-    private $container;
+    /** @var ContainerBag */
+    private $parameters;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function setContainer(?ContainerInterface $container = null)
+    /** @var Environment */
+    private $twig;
+
+    /** @var Profiler */
+    private $profiler;
+
+    public function __construct(ContainerBag $parameters, Environment $twig, Profiler $profiler)
     {
-        $this->container = $container;
+        $this->parameters = $parameters;
+        $this->twig = $twig;
+        $this->profiler = $profiler;
     }
 
     /**
@@ -38,12 +46,12 @@ class PanelController implements ContainerAwareInterface
      */
     public function configuration()
     {
-        return new Response($this->container->get('twig')->render(
+        return new Response($this->twig->render(
             '@Propel/Panel/configuration.html.twig',
             array(
                 'propel_version'     => Propel::VERSION,
-                'configuration'      => $this->container->getParameter('propel.configuration'),
-                'logging'            => $this->container->getParameter('propel.logging'),
+                'configuration'      => $this->parameters->get('propel.configuration'),
+                'logging'            => $this->parameters->get('propel.logging'),
             )
         ));
     }
@@ -59,7 +67,7 @@ class PanelController implements ContainerAwareInterface
      */
     public function explain($token, $connection, $query)
     {
-        $profiler = $this->container->get('profiler');
+        $profiler = $this->profiler;
         $profiler->disable();
 
         $profile = $profiler->loadProfile($token);
@@ -80,7 +88,7 @@ class PanelController implements ContainerAwareInterface
             return new Response('<div class="error">This query cannot be explained.</div>');
         }
 
-        return new Response($this->container->get('twig')->render(
+        return new Response($this->twig->render(
             '@Propel/Panel/explain.html.twig',
             array(
                 'data' => $results,

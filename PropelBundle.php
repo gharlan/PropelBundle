@@ -10,6 +10,7 @@
 
 namespace Propel\Bundle\PropelBundle;
 
+use Propel\Bundle\PropelBundle\DependencyInjection\RemoveProfilerControllerPass;
 use Propel\Bundle\PropelBundle\DependencyInjection\Security\UserProvider\PropelFactory;
 use Propel\Runtime\Propel;
 use Propel\Runtime\Connection\ConnectionManagerSingle;
@@ -55,6 +56,8 @@ class PropelBundle extends Bundle
         if ($container->hasExtension('security')) {
             $container->getExtension('security')->addUserProviderFactory(new PropelFactory('propel', 'propel.security.user.provider'));
         }
+
+        $container->addCompilerPass(new RemoveProfilerControllerPass());
     }
 
     protected function configureConnections()

@@ -138,7 +138,7 @@ class TypeGuesser implements FormTypeGuesserInterface
     {
         if ($column = $this->getColumn($class, $property)) {
             if ($column->isText()) {
-                return new ValueGuess($column->getSize(), Guess::HIGH_CONFIDENCE);
+                return new ValueGuess($column->getSize() ?: null, Guess::HIGH_CONFIDENCE);
             }
             switch ($column->getType()) {
                 case PropelTypes::FLOAT:

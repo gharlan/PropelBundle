@@ -83,6 +83,7 @@ class TypeGuesser implements FormTypeGuesserInterface
                 return new TypeGuess(CheckboxType::class, array(), Guess::HIGH_CONFIDENCE);
             case PropelTypes::TIMESTAMP:
             case PropelTypes::BU_TIMESTAMP:
+            case PropelTypes::DATETIME:
                 return new TypeGuess(DateTimeType::class, array(), Guess::HIGH_CONFIDENCE);
             case PropelTypes::DATE:
             case PropelTypes::BU_DATE:
@@ -182,7 +183,7 @@ class TypeGuesser implements FormTypeGuesserInterface
 
             return $this->cache[$class] = $query->getTableMap();
         }
-        
+
         return null;
     }
 

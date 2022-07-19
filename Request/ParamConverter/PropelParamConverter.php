@@ -185,7 +185,7 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected function findPk($classQuery, Request $request)
     {
-        if (in_array($this->pk, $this->exclude) || !$request->attributes->has($this->pk)) {
+        if (null === $this->pk || in_array($this->pk, $this->exclude) || !$request->attributes->has($this->pk)) {
             return false;
         }
 

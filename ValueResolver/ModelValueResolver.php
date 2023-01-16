@@ -1,28 +1,18 @@
 <?php
 
-namespace Propel\Bundle\PropelBundle\Request\ParamConverter;
+namespace Propel\Bundle\PropelBundle\ValueResolver;
 
+use Propel\Bundle\PropelBundle\Attribute\MapModel;
 use Propel\Bundle\PropelBundle\Util\PropelInflector;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
+use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * PropelParamConverter
- *
- * This convert action parameter to a Propel Object
- * there is two option for this converter:
- *
- * mapping : take an array of routeParam => column
- * exclude : take an array of routeParam to exclude from the conversion process
- *
- *
- * @author     Jérémie Augustin <jeremie.augustin@pixel-cookers.com>
- */
-class PropelParamConverter implements ParamConverterInterface
+class ModelValueResolver implements ValueResolverInterface
 {
     /**
      * the pk column (e.g. id)
@@ -59,28 +49,26 @@ class PropelParamConverter implements ParamConverterInterface
      */
     protected $hasWith = false;
 
-    /**
-     * @param Request        $request
-     * @param ParamConverter $configuration
-     *
-     * @return bool
-     *
-     * @throws \LogicException
-     * @throws NotFoundHttpException
-     * @throws \Exception
-     */
-    public function apply(Request $request, ParamConverter $configuration)
+    public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
-        $class = $configuration->getClass();
+        $name = $argument->getName();
+        if (\is_object($request->attributes->get($name))) {
+            return [];
+        }
+
+        $class = $argument->getType();
+
+        if (!is_a($class, ActiveRecordInterface::class, true)) {
+            return [];
+        }
+
         $classQuery = $class . 'Query';
-        $classTableMap = $class::TABLE_MAP;
-        $this->filters = array();
-        $this->exclude = array();
 
         if (!class_exists($classQuery)) {
             throw new \Exception(sprintf('The %s Query class does not exist', $classQuery));
         }
 
+        $classTableMap = $class::TABLE_MAP;
         $tableMap = new $classTableMap();
         $pkColumns = $tableMap->getPrimaryKeys();
 
@@ -89,18 +77,11 @@ class PropelParamConverter implements ParamConverterInterface
             $this->pk = strtolower($pk->getName());
         }
 
-        $options = $configuration->getOptions();
+        $options = $argument->getAttributes(MapModel::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? new MapModel();
 
-        // Check request attributes for converter options, if there are non provided.
-        if (empty($options) && $request->attributes->has('propel_converter') && $configuration instanceof ParamConverter) {
-            $converterOption = $request->attributes->get('propel_converter');
-            if (!empty($converterOption[$configuration->getName()])) {
-                $options = $converterOption[$configuration->getName()];
-            }
-        }
-        if (isset($options['mapping'])) {
+        if ($options->mapping) {
             // We use the mapping for calling findPk or filterBy
-            foreach ($options['mapping'] as $routeParam => $column) {
+            foreach ($options->mapping as $routeParam => $column) {
                 if ($request->attributes->has($routeParam)) {
                     if ($this->pk === $column) {
                         $this->pk = $routeParam;
@@ -110,17 +91,14 @@ class PropelParamConverter implements ParamConverterInterface
                 }
             }
         } else {
-            $this->exclude = isset($options['exclude']) ? $options['exclude'] : array();
+            $this->exclude = $options->exclude;
             $this->filters = $request->attributes->all();
         }
 
-        if (array_key_exists($configuration->getName(), $this->filters)) {
-            unset($this->filters[$configuration->getName()]);
-        }
+        unset($this->filters[$name]);
 
-        $this->withs = isset($options['with']) ? is_array($options['with']) ? $options['with'] : array($options['with']) : array();
-
-        $this->queryMethod = $queryMethod = isset($options['query_method']) ? $options['query_method'] : null;
+        $this->withs = $options->with;
+        $this->queryMethod = $queryMethod = $options->queryMethod;
 
         if (null !== $this->queryMethod && method_exists($classQuery, $this->queryMethod)) {
             // find by custom method
@@ -132,7 +110,7 @@ class PropelParamConverter implements ParamConverterInterface
             if (false === $object = $this->findPk($classQuery, $request)) {
                 // find by criteria
                 if (false === $object = $this->findOneBy($classQuery, $request)) {
-                    if ($configuration->isOptional()) {
+                    if ($argument->isNullable()) {
                         //we find nothing but the object is optional
                         $object = null;
                     } else {
@@ -142,37 +120,11 @@ class PropelParamConverter implements ParamConverterInterface
             }
         }
 
-        if (null === $object && false === $configuration->isOptional()) {
-            throw new NotFoundHttpException(sprintf('%s object not found.', $configuration->getClass()));
+        if (null === $object && false === $argument->isNullable()) {
+            throw new NotFoundHttpException(sprintf('%s object not found.', $class));
         }
 
-        $request->attributes->set($configuration->getName(), $object);
-
-        return true;
-    }
-
-    /**
-     * @param ParamConverter $configuration
-     *
-     * @return bool
-     */
-    public function supports(ParamConverter $configuration)
-    {
-        if (null === ($classname = $configuration->getClass())) {
-            return false;
-        }
-
-        if (!class_exists($classname)) {
-            return false;
-        }
-
-        // Propel Class?
-        $class = new \ReflectionClass($configuration->getClass());
-        if ($class->implementsInterface('\Propel\Runtime\ActiveRecord\ActiveRecordInterface')) {
-            return true;
-        }
-
-        return false;
+        return [$object];
     }
 
     /**
@@ -249,9 +201,9 @@ class PropelParamConverter implements ParamConverterInterface
                     $query->joinWith($with[0], $this->getValidJoin($with));
                     $this->hasWith = true;
                 } else {
-                    throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+                    throw new \Exception(sprintf('ModelValueResolver: "with" parameter "%s" is invalid,
                             only string relation name (e.g. "Book") or an array with two keys (e.g. {"Book", "LEFT_JOIN"}) are allowed',
-                            var_export($with, true)));
+                        var_export($with, true)));
                 }
             } else {
                 $query->joinWith($with);
@@ -282,9 +234,8 @@ class PropelParamConverter implements ParamConverterInterface
                 return Criteria::INNER_JOIN;
         }
 
-        throw new \Exception(sprintf('ParamConverter : "with" parameter "%s" is invalid,
+        throw new \Exception(sprintf('ModelValueResolver: "with" parameter "%s" is invalid,
                 only "left", "right" or "inner" are allowed for join option',
-                var_export($with, true)));
+            var_export($with, true)));
     }
-
 }

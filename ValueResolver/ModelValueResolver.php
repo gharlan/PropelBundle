@@ -68,6 +68,13 @@ class ModelValueResolver implements ValueResolverInterface
             throw new \Exception(sprintf('The %s Query class does not exist', $classQuery));
         }
 
+        $this->pk = null;
+        $this->filters = [];
+        $this->exclude = [];
+        $this->withs = [];
+        $this->queryMethod = null;
+        $this->hasWith = false;
+
         $classTableMap = $class::TABLE_MAP;
         $tableMap = new $classTableMap();
         $pkColumns = $tableMap->getPrimaryKeys();

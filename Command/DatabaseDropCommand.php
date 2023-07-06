@@ -27,7 +27,7 @@ class DatabaseDropCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:database:drop')

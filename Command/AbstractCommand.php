@@ -67,7 +67,7 @@ abstract class AbstractCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $kernel = $this->getApplication()->getKernel();
 

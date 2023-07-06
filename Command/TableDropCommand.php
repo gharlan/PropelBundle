@@ -28,7 +28,7 @@ class TableDropCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:table:drop')

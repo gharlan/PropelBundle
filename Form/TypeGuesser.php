@@ -42,7 +42,7 @@ class TypeGuesser implements FormTypeGuesserInterface
     /**
      * {@inheritDoc}
      */
-    public function guessType($class, $property)
+    public function guessType($class, $property): ?TypeGuess
     {
         if (!$table = $this->getTable($class)) {
             return new TypeGuess(TextType::class, array(), Guess::LOW_CONFIDENCE);
@@ -125,17 +125,19 @@ class TypeGuesser implements FormTypeGuesserInterface
     /**
      * {@inheritDoc}
      */
-    public function guessRequired($class, $property)
+    public function guessRequired($class, $property): ?ValueGuess
     {
         if ($column = $this->getColumn($class, $property)) {
             return new ValueGuess($column->isNotNull(), Guess::HIGH_CONFIDENCE);
         }
+
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function guessMaxLength($class, $property)
+    public function guessMaxLength($class, $property): ?ValueGuess
     {
         if ($column = $this->getColumn($class, $property)) {
             if ($column->isText()) {
@@ -149,12 +151,14 @@ class TypeGuesser implements FormTypeGuesserInterface
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }
+
+        return null;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function guessPattern($class, $property)
+    public function guessPattern($class, $property): ?ValueGuess
     {
         if ($column = $this->getColumn($class, $property)) {
             switch ($column->getType()) {
@@ -165,6 +169,8 @@ class TypeGuesser implements FormTypeGuesserInterface
                     return new ValueGuess(null, Guess::MEDIUM_CONFIDENCE);
             }
         }
+
+        return null;
     }
 
     /**

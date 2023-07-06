@@ -35,7 +35,7 @@ class FormGenerateCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:form:generate')

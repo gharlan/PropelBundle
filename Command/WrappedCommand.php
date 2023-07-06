@@ -36,7 +36,7 @@ abstract class WrappedCommand extends AbstractCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('platform',  null, InputOption::VALUE_OPTIONAL, 'The platform')

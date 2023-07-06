@@ -22,7 +22,7 @@ use Twig\TwigFilter;
  */
 class SyntaxExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('format_sql', [$this, 'formatSQL'], ['is_safe' => ['html']]),
@@ -30,7 +30,7 @@ class SyntaxExtension extends AbstractExtension
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'propel_syntax_extension';
     }

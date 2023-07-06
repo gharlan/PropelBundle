@@ -31,14 +31,14 @@ class TranslationCollectionFormListener implements EventSubscriberInterface
         $this->languages = $languages;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             FormEvents::PRE_SET_DATA => array('preSetData', 1),
         );
     }
 
-    public function preSetData(FormEvent $event)
+    public function preSetData(FormEvent $event): void
     {
         $form = $event->getForm();
         $data = $event->getData();

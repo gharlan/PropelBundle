@@ -29,7 +29,7 @@ class PropelBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function boot()
+    public function boot(): void
     {
         try {
             $this->configureConnections();
@@ -49,7 +49,7 @@ class PropelBundle extends Bundle
     /**
      * {@inheritdoc}
      */
-    public function build(ContainerBuilder $container)
+    public function build(ContainerBuilder $container): void
     {
         parent::build($container);
 
@@ -60,7 +60,7 @@ class PropelBundle extends Bundle
         $container->addCompilerPass(new RemoveProfilerControllerPass());
     }
 
-    protected function configureConnections()
+    protected function configureConnections(): void
     {
         $config = $this->container->getParameter('propel.configuration');
         $defaultConnection = !empty($config['runtime']['defaultConnection']) ? $config['runtime']['defaultConnection'] : key($config['database']['connections']);
@@ -95,7 +95,7 @@ class PropelBundle extends Bundle
         }
     }
 
-    protected function configureLogging()
+    protected function configureLogging(): void
     {
         $serviceContainer = Propel::getServiceContainer();
         $serviceContainer->setLogger('defaultLogger', $this->container->get('propel.logger'));

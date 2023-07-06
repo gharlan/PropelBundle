@@ -48,7 +48,7 @@ class PropelExtension extends AbstractExtension
         $this->choiceListFactory = $choiceListFactory ?: new PropertyAccessDecorator(new DefaultChoiceListFactory(), $this->propertyAccessor);
     }
     
-    protected function loadTypes()
+    protected function loadTypes(): array
     {
         return array(
             new Type\ModelType($this->propertyAccessor, $this->choiceListFactory),
@@ -57,7 +57,7 @@ class PropelExtension extends AbstractExtension
         );
     }
 
-    protected function loadTypeGuesser()
+    protected function loadTypeGuesser(): TypeGuesser
     {
         return new TypeGuesser();
     }

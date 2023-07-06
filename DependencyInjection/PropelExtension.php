@@ -31,7 +31,7 @@ class PropelExtension extends Extension
      * @param array            $configs   An array of configuration settings
      * @param ContainerBuilder $container A ContainerBuilder instance
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
@@ -69,7 +69,7 @@ class PropelExtension extends Extension
      *
      * @return string The XSD base path
      */
-    public function getXsdValidationBasePath()
+    public function getXsdValidationBasePath(): string
     {
         return __DIR__.'/../Resources/config/schema';
     }

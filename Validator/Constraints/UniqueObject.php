@@ -62,7 +62,7 @@ class UniqueObject extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function getRequiredOptions()
+    public function getRequiredOptions(): array
     {
         return array('fields');
     }
@@ -70,7 +70,7 @@ class UniqueObject extends Constraint
     /**
      * {@inheritDoc}
      */
-    public function getTargets()
+    public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;
     }

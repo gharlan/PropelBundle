@@ -22,7 +22,7 @@ class SqlInsertCommand extends WrappedCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:sql:insert')

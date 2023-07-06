@@ -23,7 +23,7 @@ class MigrationDiffCommand extends WrappedCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

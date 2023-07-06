@@ -27,7 +27,7 @@ class DatabaseCreateCommand extends AbstractCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:database:create')

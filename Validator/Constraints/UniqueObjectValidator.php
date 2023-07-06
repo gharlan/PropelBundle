@@ -27,7 +27,7 @@ class UniqueObjectValidator extends ConstraintValidator
     /**
      * {@inheritdoc}
      */
-    public function validate($object, Constraint $constraint)
+    public function validate(mixed $object, Constraint $constraint): void
     {
         $fields         = (array) $constraint->fields;
         $class          = get_class($object);

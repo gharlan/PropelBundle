@@ -47,7 +47,7 @@ class FixturesLoadCommand extends AbstractCommand
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('propel:fixtures:load')

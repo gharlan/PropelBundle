@@ -35,6 +35,11 @@ class PropelLogger implements LoggerInterface
      */
     protected $stopwatch;
 
+    /**
+     * @var bool
+     */
+    protected $isPrepared = false;
+
     use LoggerTrait;
 
     /**
@@ -47,7 +52,6 @@ class PropelLogger implements LoggerInterface
     {
         $this->logger    = $logger;
         $this->stopwatch = $stopwatch;
-        $this->isPrepared = false;
     }
 
     /**

@@ -80,8 +80,12 @@ class ModelValueResolver implements ValueResolverInterface
         $pkColumns = $tableMap->getPrimaryKeys();
 
         if (count($pkColumns) === 1) {
-            $pk = array_pop($pkColumns);
-            $this->pk = strtolower($pk->getName());
+            if ($request->attributes->has($name)) {
+                $this->pk = $name;
+            } else {
+                $pk = array_pop($pkColumns);
+                $this->pk = strtolower($pk->getName());
+            }
         }
 
         $options = $argument->getAttributes(MapModel::class, ArgumentMetadata::IS_INSTANCEOF)[0] ?? new MapModel();

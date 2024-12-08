@@ -48,7 +48,7 @@ class PropelLogger implements LoggerInterface
      * @param LoggerInterface $logger    A LoggerInterface instance
      * @param Stopwatch       $stopwatch A Stopwatch instance
      */
-    public function __construct(LoggerInterface $logger = null, Stopwatch $stopwatch = null)
+    public function __construct(?LoggerInterface $logger = null, ?Stopwatch $stopwatch = null)
     {
         $this->logger    = $logger;
         $this->stopwatch = $stopwatch;

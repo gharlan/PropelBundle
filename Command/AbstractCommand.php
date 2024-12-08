@@ -191,7 +191,7 @@ abstract class AbstractCommand extends Command
      *
      * @return array A list of schemas.
      */
-    protected function getFinalSchemas(KernelInterface $kernel, BundleInterface $bundle = null)
+    protected function getFinalSchemas(KernelInterface $kernel, ?BundleInterface $bundle = null)
     {
         if (null !== $bundle) {
             return $this->getSchemaLocator()->locateFromBundle($bundle);

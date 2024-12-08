@@ -29,7 +29,7 @@ class YamlDataLoader extends AbstractDataLoader
     /**
      * {@inheritdoc}
      */
-    public function __construct($projectDir, array $datasources, Generator $faker = null)
+    public function __construct($projectDir, array $datasources, ?Generator $faker = null)
     {
         parent::__construct($projectDir, $datasources);
 

@@ -10,12 +10,10 @@
 
 namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
-use Propel\Bundle\PropelBundle\Controller\PanelController;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\Config\FileLocator;
 
 /**

@@ -12,7 +12,7 @@ namespace Propel\Bundle\PropelBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 
@@ -49,11 +49,11 @@ class PropelExtension extends Extension
 
         // Load services
         if (!$container->hasDefinition('propel')) {
-            $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-            $loader->load('propel.xml');
-            $loader->load('converters.xml');
-            $loader->load('security.xml');
-            $loader->load('console.xml');
+            $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $loader->load('propel.php');
+            $loader->load('converters.php');
+            $loader->load('security.php');
+            $loader->load('console.php');
         }
     }
 

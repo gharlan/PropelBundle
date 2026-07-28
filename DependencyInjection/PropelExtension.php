@@ -59,7 +59,7 @@ class PropelExtension extends Extension
 
     public function getConfiguration(array $config, ContainerBuilder $container): ?ConfigurationInterface
     {
-        return new Configuration($container->getParameter('kernel.debug'), $container->getParameter('kernel.project_dir'));
+        return new Configuration($container->getParameter('kernel.debug'), '%kernel.project_dir%');
     }
 
     /**
